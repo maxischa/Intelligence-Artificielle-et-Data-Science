@@ -98,10 +98,10 @@ df["cat"] = df["cat"].str.strip().str.lower()
 
 ```python
 df["ca"] = df["qte"] * df["prix"]                          # vectorise
-df["type"] = np.where(df["ca"] > 50, "grosse", "petite")   # 2 cas
-df["taille"] = np.select([df["ca"] > 200, df["ca"] > 50],  # n cas
-                         ["tres grosse", "grosse"],
-                         default="petite")
+df["ttc"] = (df["prix"] * 1.2).round(2)                    # le meme nombre partout
+df["part"] = df["ca"] / df["ca"].sum()                     # le poids de la ligne
+
+# Decouper une variable quantitative en tranches (vu en seance 3.1)
 df["gamme"] = pd.cut(df["prix"], bins=[0, 1, 5, 20, 10000],
                      labels=["entree", "eco", "milieu", "premium"])
 ```
@@ -146,7 +146,9 @@ Opérations : `"sum"`, `"mean"`, `"median"`, `"min"`, `"max"`, `"count"`,
 
 ```python
 df.pivot_table(values="ca", index="pays", columns="segment", aggfunc="sum")
-pd.crosstab(df["pays"], df["categorie"])      # compte les occurrences
+
+# index = ce qui va en lignes, columns = ce qui va en colonnes.
+# Une case vide n'est pas un bug : c'est un croisement sans aucune ligne.
 ```
 
 ## Joindre deux tables
@@ -191,8 +193,6 @@ regroupées ici pour que vous les retrouviez sans rouvrir la feuille.
 df.tail(10)                      # les 10 dernieres lignes
 df.dtypes                        # le type de chaque colonne
 df.describe(include="all")       # resume, colonnes texte comprises
-df.set_index("cmd_id")           # une colonne devient l'index
-df.index.is_unique               # l'index se repete-t-il ?
 df.iloc[:, :3]                   # les 3 premieres colonnes
 df.iloc[:, :-2]                  # toutes sauf les 2 dernieres
 ```
@@ -228,9 +228,7 @@ serie.dt.to_period("M")         # le mois, format 2011-10
 df.groupby(["pays", "mois"])["ca"].sum()               # deux cles
 df.sort_values(["pays", "ca"], ascending=[True, False])  # deux cles, deux sens
 df.groupby("pays").head(3)                             # les 3 premiers DE CHAQUE groupe
-serie.unstack()                                        # le 2e niveau passe en colonnes
 df.idxmax(axis=1)                                      # le maximum le long de chaque LIGNE
-pd.crosstab(a, b, normalize="index") * 100             # chaque ligne ramenee a 100 %
 ```
 
 ### Joindre sans perdre de lignes

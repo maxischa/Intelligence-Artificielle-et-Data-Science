@@ -1,31 +1,29 @@
-# Aide-mémoire statistiques — bloc 3
+# Aide-mémoire statistiques — séance 3.1
 
 Gardez cette page ouverte pendant les exercices. Sur tablette, **copiez-collez**
 depuis ici plutôt que de retaper.
 
 L'aide-mémoire pandas reste valable : on continue de charger, filtrer et
 grouper. Ce qui change, c'est ce qu'on fait ensuite. La colonne **« ce qu'on
-en dit »** est le vrai sujet du bloc — une commande sans interprétation ne
-vaut rien.
+en dit »** est le vrai sujet — une commande sans interprétation ne vaut rien.
 
 Dans tous les exemples, `cmd` désigne la table des commandes.
 
 ---
 
-## Les imports du bloc 3
+## Les imports
 
 ```python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from scipy import stats                       # seances 3.2 et 3.3
-import statsmodels.formula.api as smf         # seance 3.4
+from scipy import stats        # pour le test de comparaison
 ```
 
 ---
 
-## Décrire une distribution (3.1)
+## 1. Décrire une distribution
 
 ```python
 cmd["ca"].describe()          # count, mean, std, min, quartiles, max
@@ -34,6 +32,11 @@ cmd["ca"].median()            # la mediane
 cmd["ca"].std()               # l'ecart-type
 cmd["ca"].quantile(0.9)       # le seuil des 10 % du haut
 cmd["ca"].nunique()           # nombre de valeurs distinctes
+
+q1, q3 = cmd["ca"].quantile(0.25), cmd["ca"].quantile(0.75)
+q3 - q1                       # l'ecart interquartile, version robuste
+
+cmd["ca"].plot(kind="hist", bins=40, figsize=(7, 4))   # la FORME
 ```
 
 | Ce que vous lisez | Ce qu'on en dit |
@@ -49,33 +52,49 @@ top = cmd["ca"].sort_values(ascending=False)
 ```
 
 ```python
-# Moyenne ponderee : chaque groupe compte a hauteur de son effectif
-pp = cmd.groupby("pays")["ca"].agg(["count", "mean"])
-(pp["mean"] * pp["count"]).sum() / pp["count"].sum()   # = cmd["ca"].mean()
-np.average(pp["mean"], weights=pp["count"])            # la version courte
+# Decouper une quantitative en tranches : les bornes sont un CHOIX,
+# annoncez-les avec vos resultats. 5 bornes -> 4 tranches.
+cmd["gamme"] = pd.cut(cmd["ca"], bins=[0, 200, 500, 1000, 20000],
+                      labels=["petite", "moyenne", "grande", "tres_grande"])
 ```
-
-> **Une moyenne de moyennes est une moyenne _non pondérée_.**
-> `df.groupby("pays")["ca"].mean().mean()` donne le même poids à un pays de
-> 800 commandes et à un pays d'une seule. Elle répond à « à quoi ressemble un
-> marché moyen ? », pas à « quel est le panier moyen ? ». Pour un indicateur
-> qui porte sur les commandes : pondérez, ou repartez des données
-> individuelles.
 
 ---
 
-## Comparer deux groupes (3.2)
+## 2. Relier deux variables
+
+**On trace d'abord. Toujours.**
+
+```python
+cmd.plot(kind="scatter", x="qte", y="ca", alpha=0.3, figsize=(7, 4))
+
+cmd[["ca", "nart", "qte"]].corr()                    # Pearson (droite)
+cmd["ca"].corr(cmd["nart"], method="spearman")       # Spearman (rangs)
+```
+
+| Ce que vous voyez | Ce qu'on en dit |
+|---|---|
+| Pearson ≪ Spearman | la relation n'est pas droite, ou les extrêmes pèsent |
+| corrélation ≈ 0 | aucun lien **de forme droite** — regardez le nuage |
+| corrélation très forte | vérifiez que l'une ne sert pas à calculer l'autre |
+
+Avant de commenter un coefficient, deux questions :
+
+1. **Les deux variables sont-elles mesurées indépendamment ?** `ca` et `qte`
+   corrèlent à 0,85 parce que le montant se calcule à partir des quantités.
+   Ça ne dit rien du comportement d'achat.
+2. **Le coefficient décrit-il une seule population ?** 0,38 en global, 0,90 en
+   Belgique, 0,23 en Irlande. Cherchez le **Z** qui expliquerait à la fois X
+   et Y — ici, « ce client est un grossiste ».
+
+---
+
+## 3. Comparer deux groupes
 
 ```python
 fr = cmd.query("pays == 'France'")["ca"]
 de = cmd.query("pays == 'Allemagne'")["ca"]
 
-# L'intervalle de confiance a 95 %, par reechantillonnage
-boot = pd.Series([fr.sample(len(fr), replace=True, random_state=i).mean()
-                  for i in range(1000)])
-boot.quantile(0.025), boot.quantile(0.975)
-
-# Le test
+# equal_var=False : on ne suppose pas la meme dispersion des deux cotes
 stats.ttest_ind(fr, de, equal_var=False).pvalue
 ```
 
@@ -93,167 +112,43 @@ cmd.groupby("pays")["client_id"].nunique()   # combien d'individus, pas de ligne
 round(irl.mean() - uk.mean(), 2)             # la taille de l'effet, en euros
 ```
 
----
-
-## Relier deux variables (3.3)
-
-| Variable 1 | Variable 2 | Outil |
-|---|---|---|
-| qualitative | qualitative | tableau croisé + khi-deux |
-| quantitative | quantitative | nuage de points + corrélation |
-| qualitative | quantitative | comparaison de moyennes (3.2) |
-
-```python
-# Deux qualitatives
-cmd["taille"] = pd.cut(cmd["ca"], [0, 200, 500, 1e9],
-                       labels=["petite", "moyenne", "grande"])
-tab = pd.crosstab(cmd["pays"], cmd["taille"])
-khi2, p, ddl, attendus = stats.chi2_contingency(tab)
-
-# Ou est la dependance ? Dans les ecarts a l'attendu, jamais dans la p-value
-att = pd.DataFrame(attendus, index=tab.index, columns=tab.columns)
-(tab - att).round(1)
-```
-
-```python
-# Deux quantitatives — on TRACE d'abord
-cmd.plot(kind="scatter", x="qte", y="ca", alpha=0.3, figsize=(7, 4))
-
-cmd[["ca", "nart", "qte"]].corr()                    # Pearson (droite)
-cmd["ca"].corr(cmd["nart"], method="spearman")       # Spearman (rangs)
-```
-
-| Ce que vous voyez | Ce qu'on en dit |
-|---|---|
-| Pearson ≪ Spearman | la relation n'est pas droite, ou les extrêmes pèsent |
-| corrélation ≈ 0 | aucun lien **de forme droite** — regardez le nuage |
-| corrélation très forte | vérifiez que l'une ne sert pas à calculer l'autre |
+> **Significatif ne veut pas dire important.** Sur 100 000 observations, un
+> écart de 3 € sort avec p < 0,001. Affichez toujours l'écart dans son unité
+> à côté de la p-value.
 
 ---
 
-## Régresser (3.4)
+## Pour la partie 2 de la feuille
 
-```python
-m = smf.ols("ca ~ nart", cmd).fit()      # .fit() est obligatoire
-print(m.summary().tables[1])
-
-# Version etroite, pour un ecran de tablette
-pd.DataFrame({"coef": m.params.round(2), "p": m.pvalues.round(3)})
-
-m.rsquared                                # part de la variation reproduite
-m.predict(pd.DataFrame({"nart": [20]}))   # prediction
-```
-
-```python
-smf.ols("ca ~ nart + qte", cmd).fit()     # plusieurs variables
-smf.ols("ca ~ qte + pays", cmd).fit()     # une qualitative : une modalite
-                                          # sert de reference et n'apparait pas
-```
-
-| Colonne du tableau | Ce qu'on en dit |
-|---|---|
-| `coef` | de combien `y` bouge par unité de `x`, **les autres variables restant fixes** |
-| `P>|t|` | sous 0,05, on retient le coefficient |
-| `[0.025 0.975]` | la fourchette à annoncer : « environ 16 €, entre 14 et 18 » |
-| `rsquared` | est-ce que mes variables suffisent à prédire ? |
-
-> **Un coefficient ne se lit jamais seul.** Ajouter une variable au modèle
-> change les autres coefficients — et c'est normal : ils ne répondent alors
-> plus à la même question.
-
-> **Hors du domaine observé, un modèle invente** — et il ne prévient pas.
-> Vérifiez toujours que vos valeurs d'entrée tombent dans l'intervalle des
-> données.
-
----
-
-## Pour la partie 2 des feuilles d'exercices
-
-Ces commandes ne sont pas dans les notebooks de cours : les énoncés de la
-partie 2 les introduisent au fil de l'eau. Elles sont regroupées ici.
-
-### Décrire plus finement
+Ces commandes ne sont pas dans le notebook de cours : les énoncés de la
+partie 2 les introduisent au fil de l'eau.
 
 ```python
 df.groupby("pays")["ca"].describe()      # un describe() par groupe
-pd.qcut(df["ca"], 10, labels=False)      # dix groupes de MEME EFFECTIF
-pd.cut(df["ca"], [0, 200, 500, 1e9])     # tranches de largeur choisie
-df.boxplot(column="ca", by="pays")       # boites a moustaches comparees
-serie.cumsum()                           # cumul, pour les courbes de concentration
-serie.std() / serie.mean()               # coefficient de variation
-```
-
-### Tester
-
-```python
-stats.mannwhitneyu(a, b)                 # compare sans supposer de moyenne
-stats.f_oneway(g1, g2, g3, ...)          # plus de deux groupes a la fois
-0.05 / nombre_de_tests                   # seuil corrige (Bonferroni)
-```
-
-**La force d'une dépendance, après un khi-deux** — le V de Cramér :
-
-```python
-khi2, p, ddl, attendus = stats.chi2_contingency(tab)
-n = tab.values.sum()
-cramer = np.sqrt(khi2 / (n * (min(tab.shape) - 1)))
-```
-
-| V de Cramér | Lecture |
-|---|---|
-| moins de 0,1 | lien négligeable, même si p est minuscule |
-| 0,1 à 0,3 | lien faible |
-| au-delà de 0,3 | lien marqué |
-
-**Où se situe la dépendance** — les résidus standardisés, au-delà de 2 en
-valeur absolue :
-
-```python
-att = pd.DataFrame(attendus, index=tab.index, columns=tab.columns)
-(tab - att) / np.sqrt(att)
-```
-
-> ⚠️ Le khi-deux exige des effectifs **attendus** d'au moins 5.
-> `(attendus < 5).sum()` avant de citer la p-value ; sinon, regroupez les
-> petites modalités.
-
-### Relier
-
-```python
+df.copy()                                # avant de modifier, toujours
+df["ca"].idxmax()                        # l'etiquette de la plus grande valeur
+df["jour"].unique()                      # les modalites REELLEMENT presentes
 np.log(serie)                            # redresse une relation courbe
-np.cov(a, b)[0, 1]                       # covariance : depend des unites
-plt.imshow(m, cmap="coolwarm", vmin=-1, vmax=1)   # matrice de correlation
+df.plot(kind="scatter", x="a", y="b", loglog=True)   # les deux axes en log
+df.groupby(["pays", "client_id"])["ca"].mean().reset_index()   # au bon niveau
 ```
 
 > ⚠️ Une corrélation calculée sur des données **agrégées** est toujours plus
-> forte : 0,38 par commande, 0,87 par client, 0,94 par pays — mêmes données.
+> forte : par commande, par client, par pays — mêmes données, trois chiffres.
 > Précisez toujours le niveau d'observation.
-
-### Régresser
-
-```python
-m.conf_int()                  # intervalles de confiance des coefficients
-m.conf_int().loc["qte"]       # celui d'une variable precise
-m.resid                       # les residus, alignes sur les lignes du tableau
-m.resid.idxmax()              # la ligne que le modele rate le plus
-resume.filter(like="pays", axis=0)   # ne garder que les modalites d'une qualitative
-```
 
 ---
 
-## Les erreurs les plus fréquentes du bloc 3
+## Les erreurs les plus fréquentes
 
 | Message | Cause | Solution |
 |---|---|---|
 | `ValueError: percentiles should all be in the interval [0, 1]` | `quantile(90)` au lieu de `quantile(0.9)` | un quantile est une **proportion** |
-| `ValueError: Cannot take a larger sample than population` | `sample()` sans `replace=True` | pour un rééchantillonnage, la remise est obligatoire |
-| `ValueError: Bin labels must be one fewer than the number of bin edges` | `pd.cut` : autant d'étiquettes que de bornes | 4 bornes → 3 étiquettes |
+| `ValueError: Bin labels must be one fewer than the number of bin edges` | `pd.cut` : autant d'étiquettes que de bornes | 5 bornes → 4 étiquettes |
 | `TypeError: Could not convert string ... to numeric` | moyenne sur du texte | vérifiez la colonne |
-| `AttributeError: 'OLS' object has no attribute 'summary'` | `.fit()` oublié | `smf.ols(...).fit().summary()` |
 | `pvalue = nan` **sans erreur** | un des deux groupes est vide | vérifiez l'orthographe du filtre |
-| une prédiction énorme **sans erreur** | extrapolation hors du domaine | comparez au `min` et au `max` observés |
-| une moyenne inattendue **sans erreur** | moyenne non pondérée de moyennes | pondérez, ou repartez des données individuelles |
 | une corrélation nulle **sans erreur** | relation non linéaire | tracez le nuage de points |
+| une moyenne « typique » trompeuse **sans erreur** | distribution asymétrique | affichez aussi la médiane |
 
 > **Ne lisez que la dernière ligne d'un message d'erreur.** Et méfiez-vous
-> surtout des trois lignes de ce tableau qui n'en produisent aucun.
+> surtout des trois dernières lignes de ce tableau, qui n'en produisent aucun.

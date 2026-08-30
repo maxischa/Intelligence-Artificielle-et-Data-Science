@@ -1,4 +1,4 @@
-# Aide-mémoire machine learning — bloc 4
+# Aide-mémoire machine learning — bloc 3
 
 Gardez cette page ouverte pendant les exercices. Sur tablette, **copiez-collez**
 depuis ici plutôt que de retaper.
@@ -8,20 +8,19 @@ sans qu'on sache l'expliquer ne se déploie jamais.
 
 ---
 
-## Les imports du bloc 4
+## Les imports du bloc 3
 
 ```python
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
 from sklearn.tree import plot_tree, export_text
-from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from sklearn.inspection import permutation_importance, PartialDependenceDisplay
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score
-from sklearn.metrics import precision_score, recall_score, silhouette_score
+from sklearn.metrics import precision_score, recall_score
 ```
 
 ---
@@ -45,7 +44,7 @@ p = m.predict(X_te)                         # on PREDIT sur X_te
 
 ---
 
-## Prédire un nombre (4.1)
+## Prédire un nombre (3.2)
 
 ```python
 mean_absolute_error(y_te, p)          # erreur moyenne, EN EUROS
@@ -65,7 +64,7 @@ r2_score(y_te, p)                     # part expliquee, sans unite
 
 ---
 
-## Prédire une décision (4.2)
+## Prédire une décision (3.3)
 
 ```python
 X = pd.get_dummies(donnees.drop(columns=["cible"]), drop_first=True).astype(float)
@@ -109,7 +108,7 @@ def gain(seuil, cout_contact, marge, taux_succes):
 
 ---
 
-## Arbres de décision et interprétation (4.3)
+## Arbres de décision et interprétation (3.4)
 
 Un arbre pose des questions à seuil en cascade et prédit la même chose pour
 tout un groupe. `max_depth` = le nombre de questions posées à la suite : une
@@ -171,48 +170,7 @@ explique **une personne** plutôt que le modèle.
 
 ---
 
-## Segmenter (4.4)
-
-```python
-variables = ["recence", "freq", "montant"]
-
-# log1p ecrase les extremes, StandardScaler egalise les echelles
-Xs = StandardScaler().fit_transform(np.log1p(donnees[variables]))
-
-km = KMeans(n_clusters=4, n_init=10, random_state=42).fit(Xs)
-donnees["groupe"] = km.labels_
-
-km.inertia_          # somme des carres des distances au centre de son groupe.
-                     # BASSE = groupes serres, mais elle baisse TOUJOURS quand
-                     # k monte : on cherche le coude, pas la valeur.
-silhouette_score(Xs, km.labels_)
-                     # pour chaque point : (b - a) / max(a, b), avec a sa
-                     # distance moyenne aux siens et b au groupe voisin.
-                     # Entre -1 et 1. HAUTE = groupes bien separes.
-                     # > 0,7 tres nets (rare) | 0,3 a 0,5 normal | < 0 mal place
-km.transform(Xs)                         # distance de chaque point a chaque centre
-```
-
-> ⚠️ **Standardiser n'est pas optionnel.** Sans mise à l'échelle, les groupes
-> se forment sur la variable aux plus gros nombres : ici 401 clients dans un
-> groupe et 2 dans un autre.
-
-> **Identifiez les groupes par leur comportement, jamais par leur numéro.**
-> `profils["recence"].idxmax()` désigne les dormants ; « groupe 2 » ne désigne
-> rien de stable d'une exécution à l'autre.
-
-| Ce que vous voyez | Ce qu'on en dit |
-|---|---|
-| la silhouette préfère un k que l'usage rejette | les indicateurs cadrent, l'usage tranche |
-| un groupe de 2 individus | vous avez oublié de standardiser |
-| des tailles stables d'une graine à l'autre | la structure est réelle, on peut bâtir dessus |
-
-**Une segmentation se livre nommée et chiffrée** : effectif, part du CA, et une
-action par segment. « Groupe 0 » n'est pas un livrable.
-
----
-
-## Les erreurs les plus fréquentes du bloc 4
+## Les erreurs les plus fréquentes du bloc 3
 
 | Message | Cause | Solution |
 |---|---|---|
@@ -222,7 +180,6 @@ action par segment. « Groupe 0 » n'est pas un livrable.
 | `Partial dependence plots are not supported for integer data` | colonnes entières | `.astype(float)` sur `X` |
 | un R² de 1 **sans erreur** | fuite de données | une variable contient la réponse |
 | 73 % de justesse **sans erreur** | classes déséquilibrées | comparez au modèle nul, regardez le rappel |
-| des groupes de 2 individus **sans erreur** | pas de standardisation | `StandardScaler()` avant `KMeans` |
 
 > **Ne lisez que la dernière ligne d'un message d'erreur.** Et méfiez-vous
 > surtout des trois dernières lignes de ce tableau, qui n'en produisent aucun.
