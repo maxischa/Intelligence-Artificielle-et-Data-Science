@@ -11,16 +11,15 @@ sans qu'on sache l'expliquer ne se déploie jamais.
 ## Les imports du bloc 3
 
 ```python
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
-from sklearn.tree import plot_tree, export_text
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
-from sklearn.inspection import permutation_importance, PartialDependenceDisplay
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score
-from sklearn.metrics import precision_score, recall_score
+from sklearn.metrics import precision_score, recall_score, silhouette_score
 ```
 
 ---
@@ -44,7 +43,7 @@ p = m.predict(X_te)                         # on PREDIT sur X_te
 
 ---
 
-## Prédire un nombre (3.2)
+## Prédire un nombre (3.1)
 
 ```python
 mean_absolute_error(y_te, p)          # erreur moyenne, EN EUROS
@@ -64,7 +63,7 @@ r2_score(y_te, p)                     # part expliquee, sans unite
 
 ---
 
-## Prédire une décision (3.3)
+## Prédire une décision (3.1)
 
 ```python
 X = pd.get_dummies(donnees.drop(columns=["cible"]), drop_first=True).astype(float)
@@ -108,65 +107,63 @@ def gain(seuil, cout_contact, marge, taux_succes):
 
 ---
 
-## Arbres de décision et interprétation (3.4)
-
-Un arbre pose des questions à seuil en cascade et prédit la même chose pour
-tout un groupe. `max_depth` = le nombre de questions posées à la suite : une
-question de plus **double** le nombre de groupes possibles.
+## Segmenter sans étiquette (3.2)
 
 ```python
-a = DecisionTreeClassifier(max_depth=3, random_state=42).fit(X_tr, y_tr)
-print(export_text(a, feature_names=list(X.columns)))     # les regles, en texte
+# 1. Ecraser les extremes, puis egaliser les echelles. Les deux, dans cet
+#    ordre : k-means mesure des DISTANCES, et une variable en euros ecraserait
+#    une variable en jours.
+Xs = StandardScaler().fit_transform(np.log1p(cli[["recence", "freq", "montant"]]))
 
-# impurity=False : sans le gini, qu'on ne sait pas lire a ce stade
-plot_tree(a, feature_names=list(X.columns), max_depth=2, filled=True, impurity=False)
+# 2. Former k groupes
+km = KMeans(n_clusters=4, n_init=10, random_state=42).fit(Xs)
+cli["groupe"] = km.labels_
 
-cross_val_score(a, X_tr, y_tr, cv=5, scoring="f1").mean()   # sans toucher au test
+# 3. Les deux diagnostics
+km.inertia_                       # baisse TOUJOURS quand k monte : lire le coude
+silhouette_score(Xs, km.labels_)  # haute = groupes bien separes
 ```
 
-### Les deux mesures d'importance, et le sens
-
-```python
-# 1. Native — gratuite, ARBRES SEULEMENT, et BIAISEE vers les variables
-#    a nombreuses valeurs (une colonne de bruit pur peut sortir premiere)
-pd.Series(a.feature_importances_, index=X.columns).nlargest(5)
-
-# 2. Permutation — sur le TEST, sur la metrique choisie, et sur N'IMPORTE
-#    QUEL modele : arbre, regression lineaire, logistique, pipeline...
-pi = permutation_importance(modele, X_te, y_te, n_repeats=5,
-                            random_state=42, scoring="f1")
-pd.Series(pi.importances_mean, index=X.columns).nlargest(5)
-
-# 3. Dependance partielle — le SENS de l'effet, pas seulement sa force
-PartialDependenceDisplay.from_estimator(a, X_te, ["anc"])
-```
-
-| Ce que vous voyez | Ce qu'on en dit |
+| Ce que vous lisez | Ce qu'on en dit |
 |---|---|
-| native et permutation se contredisent | croyez la permutation : la native favorise les variables continues |
-| une importance vaut zéro | ce modèle-là ne s'en sert pas — ça ne veut **pas** dire que la variable est inutile |
-| deux réglages séparés par moins que le bruit entre plis | ils ne sont pas départageables : prenez le plus simple |
-| le même trio ressort sur deux familles de modèles | c'est ce qui rend une recommandation solide |
-| variable importante mais non actionnable | intéressante pour comprendre, inutile pour décider |
+| un coude net | un nombre de groupes que les données suggèrent |
+| silhouette entre 0,3 et 0,5 | des groupes qui existent mais se chevauchent — le cas normal |
+| la silhouette préfère k = 2 | « les bons » et « les autres » : aucune action ne s'en déduit |
 
-> ⚠️ **Une importance se mesure sur des données jamais vues**, comme tout le
-> reste. Mesurée sur l'apprentissage, elle récompense la mémorisation.
+> **Le nombre de segments ne se lit pas dans une courbe.** Il se choisit sur le
+> nombre de traitements commerciaux que l'entreprise peut mener de front. Le
+> coude et la silhouette cadrent la décision, ils ne la prennent pas.
 
-### Expliquer un individu — SHAP
+> ⚠️ **Identifiez les groupes par leur comportement, jamais par leur numéro.**
+> `KMeans` ne les attribue pas dans un ordre stable : changez `random_state` et
+> les numéros changent de place.
+
+---
+
+## L'atelier « The Inbox Problem » (3.3 et 3.4)
 
 ```python
-!pip install -q shap        # ~42 Mo, telecharges par la VM Colab, pas par vous
-import shap
+%pip install -q sentence-transformers "google-genai==2.9.0"
 
-explainer = shap.TreeExplainer(f)
-valeurs = explainer.shap_values(X_te.iloc[:200])
-v = valeurs[:, :, 1] if np.array(valeurs).ndim == 3 else valeurs
+from sentence_transformers import SentenceTransformer
+encodeur = SentenceTransformer("all-MiniLM-L6-v2")   # 91 Mo, gratuit, sans cle
+E = encodeur.encode(messages)                        # (n, 384) : le SENS en position
 
-pd.Series(v[0], index=X.columns).sort_values(key=abs, ascending=False).head(5)
+# La cle vit dans les Secrets de Colab, JAMAIS dans une cellule
+from google import genai
+from google.colab import userdata
+ai = genai.Client(api_key=userdata.get("GEMINI_API_KEY"))
+reponse = ai.interactions.create(model="gemini-3.5-flash-lite", input=consigne)
+print(reponse.output_text)
 ```
 
-Positif = pousse vers 1, négatif = retient. C'est la seule méthode d'ici qui
-explique **une personne** plutôt que le modèle.
+| Le mot | Ce qu'il veut dire |
+|---|---|
+| **embedding** | une carte où le sens est une position |
+| **similarité cosinus** | la distance entre deux points sur cette carte |
+| **seuil de confiance** | à quel point le modèle doit être sûr pour décider seul |
+| **baseline** | la politique la plus bête. Si le modèle ne la bat pas, il n'y a pas de modèle |
+| **hallucination** | combler un trou par du plausible plutôt que dire « je ne sais pas » |
 
 ---
 
@@ -177,9 +174,11 @@ explique **une personne** plutôt que le modèle.
 | `could not convert string to float: 'mensuel'` | colonnes de texte | `pd.get_dummies(...)` |
 | `Found input variables with inconsistent numbers of samples` | jeux mélangés | prédire et évaluer sur le **même** jeu |
 | `NotFittedError` | `.fit()` oublié | `Modele().fit(X_tr, y_tr)` |
-| `Partial dependence plots are not supported for integer data` | colonnes entières | `.astype(float)` sur `X` |
+| `MemoryError` / la session redémarre | trop de messages encodés d'un coup | réduire `batch_size`, ou encoder par tranches |
 | un R² de 1 **sans erreur** | fuite de données | une variable contient la réponse |
 | 73 % de justesse **sans erreur** | classes déséquilibrées | comparez au modèle nul, regardez le rappel |
+| une catégorie inventée avec assurance **sans erreur** | le LLM ne dit jamais « je ne sais pas » | prévoyez une valeur de repli et relisez |
+| un `KeyError` sur `GEMINI_API_KEY` | secret absent ou notebook non autorisé | panneau **Secrets**, nom exact, accès coché |
 
 > **Ne lisez que la dernière ligne d'un message d'erreur.** Et méfiez-vous
-> surtout des trois dernières lignes de ce tableau, qui n'en produisent aucun.
+> surtout des trois lignes de ce tableau qui n'en produisent aucun.

@@ -68,36 +68,42 @@ Construction reproductible par [`bloc2_donnees/data/build_data.py`](bloc2_donnee
 
 ---
 
-## Bloc 3 — Machine learning (8h)
+## Bloc 3 — Machine Learning and AI in Data Science (8h)
 
-4 séances de 2h. La **première est un échauffement statistique** — décrire, relier, comparer — sans lequel les trois suivantes ne veulent rien dire. Pour chacune : le notebook de **cours** est suivi en séance, les **exercices** se font en autonomie, la **correction** est publiée après.
+4 séances de 2h. Les **deux premières** suivent le format habituel — cours en séance, exercices en autonomie, correction publiée après. Les **deux dernières** forment l'atelier *The Inbox Problem* : une **démonstration** de 4h, que l'enseignant déroule et que vous suivez sur votre copie. Elles n'ont donc ni feuille d'exercices ni correction, et demandent une **clé API Gemini** gratuite.
 
 | Séance | Sujet | Cours | Exercices | Correction |
 |---|---|---|---|---|
-| 3.1 | Décrire, relier, comparer — les statistiques dont le ML a besoin | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/exercices/seance1_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/corrections/seance1_correction.ipynb) |
-| 3.2 | Le Machine Learning : prédire n'est pas expliquer | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance2_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/exercices/seance2_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/corrections/seance2_correction.ipynb) |
-| 3.3 | Prédire une décision — qui va résilier ? | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance3_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/exercices/seance3_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/corrections/seance3_correction.ipynb) |
-| 3.4 | Arbres de décision — comprendre les variables qui déterminent la prédiction | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance4_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/exercices/seance4_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/corrections/seance4_correction.ipynb) |
+| 3.1 | Prédire un nombre, prédire une décision | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/exercices/seance1_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/corrections/seance1_correction.ipynb) |
+| 3.2 | Segmenter sans étiquette — quatre clients, quatre traitements | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance2_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/exercices/seance2_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/corrections/seance2_correction.ipynb) |
+| 3.3 | The Inbox Problem (1/2) — du mot au sens | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance3_cours.ipynb) | — | — |
+| 3.4 | The Inbox Problem (2/2) — de la carte à la décision | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance4_cours.ipynb) | — | — |
 
-📄 **[Aide-mémoire machine learning](ressources/cheatsheet_ml.md)** · **[Aide-mémoire statistiques](ressources/cheatsheet_stats.md)** · **[Aide-mémoire pandas](ressources/cheatsheet_pandas.md)** — à garder ouvert pendant les exercices.
+📄 **[Aide-mémoire machine learning](ressources/cheatsheet_ml.md)** · **[Aide-mémoire pandas](ressources/cheatsheet_pandas.md)** — à garder ouvert pendant les exercices.
 
 ---
 
 ### Les données du bloc 3
 
-Deux terrains. Le détaillant des blocs 1 et 2 revient, mais à une
-**maille** différente : on ne raisonne plus par ligne de vente, on
-raisonne par commande — des individus comparables entre eux. Un
-opérateur télécom sert ensuite à prédire une résiliation, parce
-qu'il offre une cible binaire nette et des facteurs explicatifs
-bien plus riches.
+Trois terrains. Le détaillant des blocs 1 et 2 revient à la maille de
+la commande ; un opérateur télécom fournit une cible binaire nette ;
+et 5 000 messages réels de clients d'une banque en ligne servent
+l'atelier final. Ces derniers sont en **anglais** : c'est un corpus
+réel et étiqueté, et il n'en existe pas d'équivalent public en
+français.
 
 | Fichier | Lignes | Contenu |
 |---|---|---|
 | `commandes.csv` | 1 955 | Une commande par ligne : `cmd_id`, `date`, `jour`, `ca`, `nart`, `qte`, `pays`, `client_id` |
 | `churn.csv` | 7 043 | Un abonné télécom par ligne : `anc`, `mensuel`, `total`, `contrat`, `internet`, `paiement`, `senior`, `couple`, `support`, `churn` |
+| `clients_rfm.csv` | 472 | Un client par ligne : `recence`, `freq`, `montant`, `pays` |
+| `produits_profil.csv` | 1 263 | Une référence vendue au moins 10 fois : `nb_cmd`, `qte`, `ca`, `prix`, `pays`, `clients`, `part_q4` |
+| `tickets.csv` | 5 000 | Un message client par ligne : `message`, `intention`, `equipe` |
+| `tickets_nouveaux.csv` | 500 | Le lot inédit du défi final, mêmes colonnes |
 
-`commandes.csv` dérive des fichiers du bloc 2. `churn.csv` vient d'[IBM Telco Customer Churn](https://github.com/IBM/telco-customer-churn-on-icp4d).
+`commandes.csv`, `clients_rfm.csv` et `produits_profil.csv` dérivent des fichiers du bloc 2.
+`churn.csv` vient d'[IBM Telco Customer Churn](https://github.com/IBM/telco-customer-churn-on-icp4d).
+Les tickets viennent de [banking77](https://github.com/PolyAI-LDN/task-specific-datasets) (PolyAI, CC-BY), dont les 77 intentions sont regroupées en 8 équipes de routage.
 Construction reproductible par [`bloc3_ml/data/build_data.py`](bloc3_ml/data/build_data.py).
 
 ---
