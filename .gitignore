@@ -35,3 +35,15 @@ Pipfile.lock
 # badge Colab. Regenerable par `python outils/construire_drive.py`, et le
 # publier ici ne ferait que dupliquer le contenu du depot.
 distribution_drive/
+
+# Brouillons de travail deposes a la main (notebooks annotes, versions
+# ameliorees a reporter dans outils/contenu/). Ils portent des solutions et
+# des notes de passation : le depot public n'en veut pas.
+improvements/
+
+# --- PUBLICATION PROGRESSIVE (genere par outils/publier.py) ---------------
+# Ne pas editer a la main : reecrit a chaque deplacement du curseur.
+# Les fichiers ci-dessous existent sur le disque mais ne sont pas encore
+# ouverts aux etudiants. Les ignorer empeche un `git add -A` de les publier
+# par accident.
+# --- fin PUBLICATION PROGRESSIVE ------------------------------------------
