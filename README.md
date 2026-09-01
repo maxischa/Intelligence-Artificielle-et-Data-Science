@@ -105,33 +105,3 @@ français.
 `churn.csv` vient d'[IBM Telco Customer Churn](https://github.com/IBM/telco-customer-churn-on-icp4d).
 Les tickets viennent de [banking77](https://github.com/PolyAI-LDN/task-specific-datasets) (PolyAI, CC-BY), dont les 77 intentions sont regroupées en 8 équipes de routage.
 Construction reproductible par [`bloc3_ml/data/build_data.py`](bloc3_ml/data/build_data.py).
-
----
-
-## Pour l'équipe enseignante
-
-Ce dépôt est **purement étudiant**. La chaîne de production du cours reste sur
-la machine de l'enseignant et n'est pas publiée :
-
-| Reste local | Pourquoi |
-|---|---|
-| `bloc*/intervenant/` | cours minuté, notes de passation, pièges attendus |
-| `outils/` | la source dont les notebooks sont générés — contient les mêmes notes et toutes les solutions |
-
-Les quatre variantes d'une séance (cours, intervenant, exercices, correction)
-sont **générées depuis une source unique**, une variante par usage. Un énoncé
-ne peut donc pas diverger entre le notebook d'exercices et sa correction, et
-une solution ne peut pas se retrouver par accident dans le notebook remis aux
-étudiants.
-
-Côté enseignant, trois commandes :
-
-```bash
-python outils/construire_notebooks.py   # regenere les notebooks
-python outils/construire_readme.py      # regenere cette page
-python outils/verifier_notebooks.py     # les execute tous et controle les regles
-```
-
-L'adresse de ce dépôt est définie à un seul endroit (`outils/depot.py`) :
-la changer et regénérer suffit à mettre à jour tous les badges « Open in
-Colab », tous les liens de cette page et toutes les URL de données.
