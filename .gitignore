@@ -46,7 +46,6 @@ improvements/
 # Les fichiers ci-dessous existent sur le disque mais ne sont pas encore
 # ouverts aux etudiants. Les ignorer empeche un `git add -A` de les publier
 # par accident.
-bloc1_python/corrections/seance1_correction.ipynb
 bloc2_donnees/corrections/seance1_correction.ipynb
 bloc2_donnees/corrections/seance2_correction.ipynb
 bloc2_donnees/cours/seance1_cours.ipynb
