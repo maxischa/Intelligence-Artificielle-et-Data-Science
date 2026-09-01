@@ -46,4 +46,31 @@ improvements/
 # Les fichiers ci-dessous existent sur le disque mais ne sont pas encore
 # ouverts aux etudiants. Les ignorer empeche un `git add -A` de les publier
 # par accident.
+bloc1_python/corrections/seance1_correction.ipynb
+bloc2_donnees/corrections/seance1_correction.ipynb
+bloc2_donnees/corrections/seance2_correction.ipynb
+bloc2_donnees/cours/seance1_cours.ipynb
+bloc2_donnees/cours/seance2_cours.ipynb
+bloc2_donnees/data/build_data.py
+bloc2_donnees/data/clients.csv
+bloc2_donnees/data/produits.csv
+bloc2_donnees/data/ventes.csv
+bloc2_donnees/data/ventes_sale.csv
+bloc2_donnees/exercices/seance1_exercices.ipynb
+bloc2_donnees/exercices/seance2_exercices.ipynb
+bloc3_ml/corrections/seance1_correction.ipynb
+bloc3_ml/corrections/seance2_correction.ipynb
+bloc3_ml/cours/seance1_cours.ipynb
+bloc3_ml/cours/seance2_cours.ipynb
+bloc3_ml/cours/seance3_cours.ipynb
+bloc3_ml/cours/seance4_cours.ipynb
+bloc3_ml/data/build_data.py
+bloc3_ml/data/churn.csv
+bloc3_ml/data/clients_rfm.csv
+bloc3_ml/data/commandes.csv
+bloc3_ml/data/produits_profil.csv
+bloc3_ml/data/tickets.csv
+bloc3_ml/data/tickets_nouveaux.csv
+bloc3_ml/exercices/seance1_exercices.ipynb
+bloc3_ml/exercices/seance2_exercices.ipynb
 # --- fin PUBLICATION PROGRESSIVE ------------------------------------------

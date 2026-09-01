@@ -10,6 +10,10 @@ Introduction à Python pour la collecte et l'analyse de données — 14 heures.
 > Drive**, *avant* de taper quoi que ce soit. Sinon votre travail est perdu à
 > la fermeture de l'onglet.
 
+> 🗓️ **Le dépôt se remplit au fil des séances.** Le cours et les exercices
+> paraissent avant le créneau, la correction après. Les lignes marquées
+> *à venir* ne sont pas des oublis : elles s'ouvriront le moment venu.
+
 ---
 
 ## Bloc 1 — Prise en main de Python et de Colab (2h)
@@ -18,7 +22,7 @@ Une séance de 2h. Le notebook de **cours** est suivi en séance, les **exercice
 
 | Séance | Sujet | Cours | Exercices | Correction |
 |---|---|---|---|---|
-| 1.1 | Prise en main — Colab, Markdown et vos premières lignes | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/exercices/seance1_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/corrections/seance1_correction.ipynb) |
+| 1.1 | Prise en main — Colab, Markdown et vos premières lignes | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/exercices/seance1_exercices.ipynb) | *à venir* |
 
 📄 **[Bien démarrer — surtout sur tablette](ressources/setup_tablette.md)** — à garder ouvert pendant les exercices.
 
@@ -44,8 +48,8 @@ Extrait de `bloc2_donnees/data/ventes.csv`. Construction reproductible par [`blo
 
 | Séance | Sujet | Cours | Exercices | Correction |
 |---|---|---|---|---|
-| 2.1 | Charger, comprendre et nettoyer un jeu de données | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/exercices/seance1_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/corrections/seance1_correction.ipynb) |
-| 2.2 | Agréger, croiser et visualiser | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/cours/seance2_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/exercices/seance2_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/corrections/seance2_correction.ipynb) |
+| 2.1 | Charger, comprendre et nettoyer un jeu de données | *à venir* | *à venir* | *à venir* |
+| 2.2 | Agréger, croiser et visualiser | *à venir* | *à venir* | *à venir* |
 
 📄 **[Aide-mémoire pandas](ressources/cheatsheet_pandas.md)** — à garder ouvert pendant les exercices.
 
@@ -74,10 +78,10 @@ Construction reproductible par [`bloc2_donnees/data/build_data.py`](bloc2_donnee
 
 | Séance | Sujet | Cours | Exercices | Correction |
 |---|---|---|---|---|
-| 3.1 | Prédire un nombre, prédire une décision | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/exercices/seance1_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/corrections/seance1_correction.ipynb) |
-| 3.2 | Segmenter sans étiquette — quatre clients, quatre traitements | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance2_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/exercices/seance2_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/corrections/seance2_correction.ipynb) |
-| 3.3 | The Inbox Problem (1/2) — du mot au sens | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance3_cours.ipynb) | — | — |
-| 3.4 | The Inbox Problem (2/2) — de la carte à la décision | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc3_ml/cours/seance4_cours.ipynb) | — | — |
+| 3.1 | Prédire un nombre, prédire une décision | *à venir* | *à venir* | *à venir* |
+| 3.2 | Segmenter sans étiquette — quatre clients, quatre traitements | *à venir* | *à venir* | *à venir* |
+| 3.3 | The Inbox Problem (1/2) — du mot au sens | *à venir* | — | — |
+| 3.4 | The Inbox Problem (2/2) — de la carte à la décision | *à venir* | — | — |
 
 📄 **[Aide-mémoire machine learning](ressources/cheatsheet_ml.md)** · **[Aide-mémoire pandas](ressources/cheatsheet_pandas.md)** — à garder ouvert pendant les exercices.
 
