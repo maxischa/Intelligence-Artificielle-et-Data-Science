@@ -22,7 +22,7 @@ Une séance de 2h. Le notebook de **cours** est suivi en séance, les **exercice
 
 | Séance | Sujet | Cours | Exercices | Correction |
 |---|---|---|---|---|
-| 1.1 | Prise en main — Colab, Markdown et vos premières lignes | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/exercices/seance1_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/corrections/seance1_correction.ipynb) |
+| 1.1 | Prise en main — Colab, Markdown et vos premières lignes | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc1_python/exercices/seance1_exercices.ipynb) | *à venir* |
 
 📄 **[Bien démarrer — surtout sur tablette](ressources/setup_tablette.md)** — à garder ouvert pendant les exercices.
 
@@ -48,7 +48,7 @@ Extrait de `bloc2_donnees/data/ventes.csv`. Construction reproductible par [`blo
 
 | Séance | Sujet | Cours | Exercices | Correction |
 |---|---|---|---|---|
-| 2.1 | Charger, comprendre et nettoyer un jeu de données | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/exercices/seance1_exercices.ipynb) | *à venir* |
+| 2.1 | Charger, comprendre et nettoyer un jeu de données | *à venir* | *à venir* | *à venir* |
 | 2.2 | Agréger, croiser et visualiser | *à venir* | *à venir* | *à venir* |
 
 📄 **[Aide-mémoire pandas](ressources/cheatsheet_pandas.md)** — à garder ouvert pendant les exercices.
