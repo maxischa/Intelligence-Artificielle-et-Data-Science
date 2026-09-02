@@ -38,8 +38,8 @@ Extrait de `bloc2_donnees/data/ventes.csv`. Construction reproductible par [`blo
 
 | Séance | Sujet | Cours | Exercices | Correction |
 |---|---|---|---|---|
-| 2.1 | Charger, comprendre et nettoyer un jeu de données | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/exercices/seance1_exercices.ipynb) | *à venir* |
-| 2.2 | Agréger, croiser et visualiser | *à venir* | *à venir* | *à venir* |
+| 2.1 | Charger, comprendre et nettoyer un jeu de données | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/cours/seance1_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/exercices/seance1_exercices.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/corrections/seance1_correction.ipynb) |
+| 2.2 | Agréger, croiser et visualiser | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/cours/seance2_cours.ipynb) | [▶](https://colab.research.google.com/github/maxischa/Intelligence-Artificielle-et-Data-Science/blob/main/bloc2_donnees/exercices/seance2_exercices.ipynb) | *à venir* |
 
 📄 **[Aide-mémoire pandas](ressources/cheatsheet_pandas.md)** — à garder ouvert pendant les exercices.
 
