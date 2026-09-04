@@ -41,6 +41,14 @@ distribution_drive/
 # des notes de passation : le depot public n'en veut pas.
 improvements/
 
+# QCM d'evaluation (sujet LaTeX, corrige, PDF compiles). Un questionnaire et
+# son corrige publies avant l'epreuve ne valent plus rien.
+#
+# ATTENTION : cette entree doit rester AU-DESSUS du bloc PUBLICATION
+# PROGRESSIVE ci-dessous, qui est reecrit integralement par outils/publier.py.
+# Une ligne posee dedans disparaitrait au premier deplacement du curseur.
+evaluation/
+
 # --- PUBLICATION PROGRESSIVE (genere par outils/publier.py) ---------------
 # Ne pas editer a la main : reecrit a chaque deplacement du curseur.
 # Les fichiers ci-dessous existent sur le disque mais ne sont pas encore
