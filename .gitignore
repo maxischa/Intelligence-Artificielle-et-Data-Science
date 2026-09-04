@@ -54,5 +54,4 @@ evaluation/
 # Les fichiers ci-dessous existent sur le disque mais ne sont pas encore
 # ouverts aux etudiants. Les ignorer empeche un `git add -A` de les publier
 # par accident.
-bloc3_ml/cours/seance4_cours.ipynb
 # --- fin PUBLICATION PROGRESSIVE ------------------------------------------
